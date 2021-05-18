@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -10,25 +10,27 @@ import {
 } from "react-native";
 
 import checkIcon from "../assets/icons/Check.png";
+import { dark } from "../util/theme";
 
 interface TodoInputProps {
   addTask: (task: string) => void;
+  handleTheme: () => void;
+  theme: boolean;
 }
 
-export function TodoInput({ addTask }: TodoInputProps) {
+export function TodoInput({ addTask, theme }: TodoInputProps) {
   const [task, setTask] = useState("");
 
   function handleAddNewTask() {
-
     if (task === "") {
       Alert.alert("Campo vazio", "Digite um nome para sua tarefa");
       return;
     }
     addTask(task);
-    setTask("")
+    setTask("");
   }
 
-  return (
+  return theme ? (
     <View
       style={[
         styles.inputContainer,
@@ -42,14 +44,42 @@ export function TodoInput({ addTask }: TodoInputProps) {
         placeholder="Adicionar novo todo..."
         returnKeyType="send"
         value={task}
+        placeholderTextColor="#A09CB1"
         onChangeText={setTask}
         onSubmitEditing={handleAddNewTask}
-     
       />
       <TouchableOpacity
         testID="add-new-task-button"
         activeOpacity={0.7}
         style={styles.addButton}
+        onPress={handleAddNewTask}
+      >
+        <Image source={checkIcon} />
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <View
+      style={[
+        styles.inputContainer,
+        Platform.OS === "ios"
+          ? styles.inputIOSShadow
+          : styles.inputAndroidShadow,
+        { backgroundColor: dark.inputBackgroundColor },
+      ]}
+    >
+      <TextInput
+        style={[styles.input, { backgroundColor: dark.inputBackgroundColor, color: dark.inputTextColor }]}
+        placeholder="Adicionar novo todo..."
+        returnKeyType="send"
+        value={task}
+        placeholderTextColor={dark.inputTextColor}
+        onChangeText={setTask}
+        onSubmitEditing={handleAddNewTask}
+      />
+      <TouchableOpacity
+        testID="add-new-task-button"
+        activeOpacity={0.7}
+        style={[styles.addButton, { backgroundColor: dark.inputButton }]}
         onPress={handleAddNewTask}
       >
         <Image source={checkIcon} />
