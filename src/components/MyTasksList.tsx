@@ -44,7 +44,7 @@ export function MyTasksList({
   onPress,
   theme,
 }: MyTasksListProps) {
-  return theme ? (
+  return  (
     <FlatList
       data={tasks}
       keyExtractor={(item) => String(item.id)}
@@ -81,62 +81,7 @@ export function MyTasksList({
         marginTop: 32,
       }}
     />
-  ) : (
-    <FlatList
-      data={tasks}
-      keyExtractor={(item) => String(item.id)}
-      renderItem={({ item, index }) => {
-        return (
-          <TouchableOpacity
-            testID={`button-${index}`}
-            activeOpacity={0.7}
-            onLongPress={() => onLongPress(item.id)}
-            onPress={() => onPress(item.id)}
-            style={
-              item.done
-                ? [
-                    styles.taskButtonDone,
-                    { backgroundColor: dark.taskButtonDone },
-                  ]
-                : [styles.taskButton]
-            }
-            //TODO - use onPress, onLongPress and style props
-          >
-            <View
-              testID={`marker-${index}`}
-              //TODO - use style prop
-              style={
-                item.done
-                  ? [
-                      styles.taskMarkerDone,
-                      { backgroundColor: dark.taskMarkerDone },
-                    ]
-                  : [styles.taskMarker, {borderColor: dark.taskMarker}]
-              }
-            />
-            <Text
-              //TODO - use style prop
-              style={
-                item.done
-                  ? [styles.taskTextDone, { color: dark.taskTextDone }]
-                  : [styles.taskText, {color: dark.taskText}]
-              }
-            >
-              {item.title}
-            </Text>
-          </TouchableOpacity>
-        );
-      }}
-      ListHeaderComponent={<FlatListHeaderComponent theme={theme} />}
-      ListHeaderComponentStyle={{
-        marginBottom: 20,
-      }}
-      style={{
-        marginHorizontal: 24,
-        marginTop: 32,
-      }}
-    />
-  );
+  ) 
 }
 
 const styles = StyleSheet.create({
